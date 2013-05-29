@@ -237,53 +237,53 @@ class TrackTrTrackingController extends Controller
 			
 			if(count($sqlTracking)==0){ //si por cada arreglo cuenta 0 (no hay un tracking similar), cuenta 1 (ya existe un tracking)
 			//asignamos nuevos registro a los arreglos: l[], r[], m[], a[]......
-				$l[]=$lote[$i]; 
-				$r[]=$receipt[$i];
-				$m[]=$manifest[$i];
-				$a[]=$awb[$i];
-				$d[]=$date[$i];
-				$s[]=$shipper[$i];
-				$ce[]=$consignee[$i];
-				$ai[]=$account_id[$i];
-				$ar[]=$account_rg[$i];
-				$p[]=$pieces[$i];
-				$wl[]=$weight_lb[$i];
-				$wk[]=$weight_kg[$i];
-				$t[]=$tracking[$i];
-				$v[]=$value[$i];
-				$cy[]=$comodity[$i];
-				$di[]=$dimm_in[$i];
-				$dc[]=$dimm_cm[$i];
-				$co[]=$comments[$i];
+				$item1[]=$lote[$i]; 
+				$item2[]=$receipt[$i];
+				$item3[]=$manifest[$i];
+				$item4[]=$awb[$i];
+				$item5[]=$date[$i];
+				$item6[]=$shipper[$i];
+				$item7[]=$consignee[$i];
+				$item8[]=$account_id[$i];
+				$item9[]=$account_rg[$i];
+				$item10[]=$pieces[$i];
+				$item11[]=$weight_lb[$i];
+				$item12[]=$weight_kg[$i];
+				$item13[]=$tracking[$i];
+				$item14[]=$value[$i];
+				$item15[]=$comodity[$i];
+				$item16[]=$dimm_in[$i];
+				$item17[]=$dimm_cm[$i];
+				$item18[]=$comments[$i];
 
 			}
 		}
-		$new_num=sizeof($t); //numero de nuevos registros
+		$new_num=sizeof($item13); //numero de nuevos registros
 		
-		if(sizeof($t)!=0){ //si existen nuevos registros
+		if(sizeof($item13)!=0){ //si existen nuevos registros
 
-        for($i=0;$i<sizeof($t);$i++): //por cada nuevo valor del arreglo t[] (similar para todos los array ya que poseen el mismo index)
+        for($i=0;$i<sizeof($item13);$i++): //por cada nuevo valor del arreglo item13[] (similar para todos los array ya que poseen el mismo index)
 			$saveurl= new SaveUrl(); //objeto del modelo saveurl
 
 			//Se guardan cada array a la base de dato	
-      	 	$saveurl->lote=$l[$i];
-           	$saveurl->receipt=$r[$i];
- 		    $saveurl->manifest=$m[$i];
-            $saveurl->awb=$a[$i];
-            $saveurl->date=$d[$i];
-            $saveurl->shipper=$s[$i];
-    	   	$saveurl->account_rg=$ar[$i];
-            $saveurl->account_id=$ai[$i];
-            $saveurl->consignee=$ce[$i];
-            $saveurl->pieces=$p[$i];
-            $saveurl->weight_lb=$wl[$i];
-            $saveurl->weight_kg=$wk[$i];
-            $saveurl->tracking=$t[$i];
-            $saveurl->value=$v[$i];
-            $saveurl->comodity=$cy[$i];
-            $saveurl->dimm_in=$di[$i];
-            $saveurl->dimm_cm=$dc[$i];
-            $saveurl->comment=$co[$i];
+      	 	$saveurl->lote=$item1[$i];
+           	$saveurl->receipt=$item2[$i];
+ 		    $saveurl->manifest=$item3[$i];
+            $saveurl->awb=$item4[$i];
+            $saveurl->date=$item5[$i];
+            $saveurl->shipper=$item6[$i];
+    	   	$saveurl->account_rg=$item7[$i];
+            $saveurl->account_id=$item8[$i];
+            $saveurl->consignee=$item9[$i];
+            $saveurl->pieces=$item10[$i];
+            $saveurl->weight_lb=$item11[$i];
+            $saveurl->weight_kg=$item12[$i];
+            $saveurl->tracking=$item13[$i];
+            $saveurl->value=$item14[$i];
+            $saveurl->comodity=$item15[$i];
+            $saveurl->dimm_in=$item16[$i];
+            $saveurl->dimm_cm=$item17[$i];
+            $saveurl->comment=$item18[$i];
             $saveurl->save(); //guarda
 				
     	endfor;
