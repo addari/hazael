@@ -1,3 +1,8 @@
+<?php
+$this->breadcrumbs=array(
+    'Track Tr Trackings',
+);
+?>
 <h1>Cargando Datos del HTML</h1>
 <?php
     echo CHtml::beginForm('treat_url','get'); //envia la url a la accion treat_url

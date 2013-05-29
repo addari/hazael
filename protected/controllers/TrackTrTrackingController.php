@@ -188,7 +188,7 @@ class TrackTrTrackingController extends Controller
             Yii::app()->cache->set('dimm_in',$dimm_in);
             Yii::app()->cache->set('dimm_cm',$dimm_cm);
             Yii::app()->cache->set('comment',$comment);
-            
+            yii::app()->cache->set('url',$url); //guardamos en cache la url
             $this->render('treat_url', array('url'=>$url, 'lote'=>$lote, 'title'=>$title)); //enviamos  title, lote, url a la vista treat_url
 			
 			
@@ -207,53 +207,96 @@ class TrackTrTrackingController extends Controller
 		//captura los array de todas las variables guardadas en cache llamadas por su nombre con GET	
 		$lote=Yii::app()->cache->get('lote');
 		$receipt=Yii::app()->cache->get('receipt');
-                $manifest=Yii::app()->cache->get('manifest');
-                $awb=Yii::app()->cache->get('awb');
-                $date=Yii::app()->cache->get('date');
-                $shipper=Yii::app()->cache->get('shipper');
-                $consignee=Yii::app()->cache->get('consignee');
-                $account_rg=Yii::app()->cache->get('account_rg');
-                $account_id=Yii::app()->cache->get('account_id');
-                $pieces=Yii::app()->cache->get('pieces');
-                $weight_lb=Yii::app()->cache->get('weight_lb');
-                $weight_kg =Yii::app()->cache->get('weight_kg');
-                $tracking =Yii::app()->cache->get('tracking');
-                $value =Yii::app()->cache->get('value');
-                $comodity=Yii::app()->cache->get('comodity');
-                $dimm_in=Yii::app()->cache->get('$dimm_in');
-                $dimm_cm=Yii::app()->cache->get('dimm_cm');
-                $comment=Yii::app()->cache->get('comment');
-		
+  	    $manifest=Yii::app()->cache->get('manifest');
+        $awb=Yii::app()->cache->get('awb');
+        $date=Yii::app()->cache->get('date');
+        $shipper=Yii::app()->cache->get('shipper');
+        $consignee=Yii::app()->cache->get('consignee');
+        $account_rg=Yii::app()->cache->get('account_rg');
+        $account_id=Yii::app()->cache->get('account_id');
+        $pieces=Yii::app()->cache->get('pieces');
+        $weight_lb=Yii::app()->cache->get('weight_lb');
+        $weight_kg =Yii::app()->cache->get('weight_kg');
+        $tracking =Yii::app()->cache->get('tracking');
+        $value =Yii::app()->cache->get('value');
+        $comodity=Yii::app()->cache->get('comodity');
+        $dimm_in=Yii::app()->cache->get('$dimm_in');
+        $dimm_cm=Yii::app()->cache->get('dimm_cm');
+        $comment=Yii::app()->cache->get('comment');
+        $url=yii::app()->cache->get('url'); //captura de url
 
-                for($i=0;$i<sizeof($receipt);$i++): //para cada valor de receipt (similar para todos los array ya que poseen el mismo index)
-				
-                        $saveurl= new SaveUrl(); //objeto del modelo saveurl
+        $consulta=TrackTrTracking::model()->findAll(); //encuentra todos los registros en la db
+		$cantidad=count($consulta); //cuenta cuantos registros existen
+		$t=null; //variable al que se le va a asignar el arreglo de tracking
+
+		for($i=0;$i<sizeof($tracking);$i++){
+			$trk= $tracking[$i]; //asignamos cada arreglo a una variable
+		
+		$sql="SELECT tracking FROM track_tr_tracking WHERE tracking = '$trk'"; //consulta si existe un tracking igual
+		$sqlTracking = yii::app()->db->createCommand($sql)->query(); //ejecuta la consulta
+			
+			if(count($sqlTracking)==0){ //si por cada arreglo cuenta 0 (no hay un tracking similar), cuenta 1 (ya existe un tracking)
+			//asignamos nuevos registro a los arreglos: l[], r[], m[], a[]......
+				$item1[]=$lote[$i]; 
+				$item2[]=$receipt[$i];
+				$item3[]=$manifest[$i];
+				$item4[]=$awb[$i];
+				$item5[]=$date[$i];
+				$item6[]=$shipper[$i];
+				$item7[]=$consignee[$i];
+				$item8[]=$account_id[$i];
+				$item9[]=$account_rg[$i];
+				$item10[]=$pieces[$i];
+				$item11[]=$weight_lb[$i];
+				$item12[]=$weight_kg[$i];
+				$item13[]=$tracking[$i];
+				$item14[]=$value[$i];
+				$item15[]=$comodity[$i];
+				$item16[]=$dimm_in[$i];
+				$item17[]=$dimm_cm[$i];
+				$item18[]=$comments[$i];
+
+			}
+		}
+		$new_num=sizeof($item13); //numero de nuevos registros
+		
+		if(sizeof($item13)!=0){ //si existen nuevos registros
+
+        for($i=0;$i<sizeof($item13);$i++): //por cada nuevo valor del arreglo item13[] (similar para todos los array ya que poseen el mismo index)
+			$saveurl= new SaveUrl(); //objeto del modelo saveurl
 
 			//Se guardan cada array a la base de dato	
-                        $saveurl->lote=$lote;
-                        $saveurl->receipt=$receipt[$i];
-                        $saveurl->manifest=$manifest[$i];
-                        $saveurl->awb=$awb[$i];
-                        $saveurl->date=$date[$i];
-                        $saveurl->shipper=$shipper[$i];
-                        $saveurl->account_rg=$account_rg[$i];
-                        $saveurl->account_id=$account_id[$i];
-                        $saveurl->consignee=$consignee[$i];
-                        $saveurl->pieces=$pieces[$i];
-                        $saveurl->weight_lb=$weight_lb[$i];
-                        $saveurl->weight_kg=$weight_kg[$i];
-                        $saveurl->tracking=$tracking[$i];
-                        $saveurl->value=$value[$i];
-                        $saveurl->comodity=$comodity[$i];
-                        $saveurl->dimm_in=$dimm_in[$i];
-                        $saveurl->dimm_cm=$dimm_cm[$i];
-                        $saveurl->comment=$comment[$i];
-                        $saveurl->save(); //guarda
+      	 	$saveurl->lote=$item1[$i];
+           	$saveurl->receipt=$item2[$i];
+ 		    $saveurl->manifest=$item3[$i];
+            $saveurl->awb=$item4[$i];
+            $saveurl->date=$item5[$i];
+            $saveurl->shipper=$item6[$i];
+    	   	$saveurl->account_rg=$item7[$i];
+            $saveurl->account_id=$item8[$i];
+            $saveurl->consignee=$item9[$i];
+            $saveurl->pieces=$item10[$i];
+            $saveurl->weight_lb=$item11[$i];
+            $saveurl->weight_kg=$item12[$i];
+            $saveurl->tracking=$item13[$i];
+            $saveurl->value=$item14[$i];
+            $saveurl->comodity=$item15[$i];
+            $saveurl->dimm_in=$item16[$i];
+            $saveurl->dimm_cm=$item17[$i];
+            $saveurl->comment=$item18[$i];
+            $saveurl->save(); //guarda
 				
-                endfor;
+    	endfor;
+		$new_data=TrackTrTracking::model()->findAll("id >'$cantidad'"); //encuentra los registros nuevos 
 		
-		
-		$this->redirect(array('admin')); // dirije al index 
+		Yii::app()->user->setFlash('success','Se han Guardado Exitoxamente'); //enviamos mensaje flash
+		$this->render('add_url',array('new_data'=>$new_data, 'new_num'=>$new_num, 'url'=>$url)); //enviamos varaibles a la vista add_url
+		}
+	
+		else{ // de lo contrario si t[]= null
+			Yii::app()->user->setFlash('notice','No existe ningun registro nuevo que guardar según el Tracking');//enviamos mensaje flash
+			$this->render('load_url'); //carga la vista y accion load_url
+		}
 		
 	}
 

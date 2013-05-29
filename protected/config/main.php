@@ -52,17 +52,17 @@ return array(
 		),
 		// uncomment the following to enable URLs in path-format
 		
-//		 'urlManager'=>array(
-//		 	'urlFormat'=>'path',
+		 'urlManager'=>array(
+		 	'urlFormat'=>'path',
 //		 	#'showScriptName'=>false,
 //		 	#'urlSuffix'=>'.html',
-//		 	'rules'=>array(
-//                              '<controller:\w+>/<action:[^\/?]+>'=>'<controller>/<action>',
-//		 		#'<controller:\w+>/<id:\d+>'=>'<controller>/view',
-//		 		#'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
-//		 		#'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
-//		 	),
-//		 ),
+		 	'rules'=>array(
+//                         '<controller:\w+>/<action:[^\/?]+>'=>'<controller>/<action>',
+		 		'<controller:\w+>/<id:\d+>'=>'<controller>/view',
+		 		'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
+		 		'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
+		 	),
+		 ),
             
 		
 		'db'=>array(
